@@ -182,6 +182,23 @@
     font-size: 1.05rem;
     font-weight: 700;
     word-break: break-word;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flag-badge{
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 6px;
+    background: rgba(30,95,116,0.12);
+    color: var(--accent-dark);
+    font-size: 0.75rem;
+    font-weight: 800;
   }
   .field-row{
     display: flex;
@@ -376,26 +393,26 @@
      données, éditer directement ce fichier (tableau DEFAULT_DATA) et
      redéployer sur l'hébergement. */
   const DEFAULT_DATA = [
-    { stand: "Plessis Pâte", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO" },
-    { stand: "Oise Expo", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO" },
-    { stand: "Génération.s", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
-    { stand: "EELV", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
-    { stand: "Debout (la France)", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
-    { stand: "Saint Quentin", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite" },
-    { stand: "FD Ain", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite" },
-    { stand: "FSGT", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO" },
-    { stand: "Justice pour Adama", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO" },
-    { stand: "Les Inverties", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO" },
-    { stand: "NPA", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
-    { stand: "Vitry Rassemblé(e)", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
-    { stand: "Confédération Paysanne", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite" },
-    { stand: "Red Jeunes", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite" },
-    { stand: "Rev", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite" },
-    { stand: "Non Violence", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite" },
-    { stand: "Santé en Danger", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite" },
-    { stand: "SOS Racisme", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite" },
-    { stand: "La Jeunesse Communiste", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite" },
-    { stand: "UNEF", rue: "Avenue Frida Kahlo", pompier: "11", zone: "Jack Ralite" }
+    { stand: "Plessis Pâte", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Oise Expo", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Génération.s", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "EELV", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Debout (la France)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Saint Quentin", flag: "X", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "FD Ain", flag: "", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "FSGT", flag: "", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Justice pour Adama", flag: "", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Les Inverties", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "NPA", flag: "X", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Vitry Rassemblé(e)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Confédération Paysanne", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Red Jeunes", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Rev", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Non Violence", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "Santé en Danger", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "SOS Racisme", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "La Jeunesse Communiste", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "UNEF", flag: "", rue: "Avenue Frida Kahlo", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite - zone nuit" }
   ];
 
   let data = DEFAULT_DATA;
@@ -416,12 +433,16 @@
   }
 
   function cardHTML(d){
+    const flagBadge = d.flag
+      ? `<span class="flag-badge" title="Marqueur">${escapeHtml(d.flag)}</span>`
+      : "";
     return `
       <div class="card">
         <div class="main-info">
-          <h2>${escapeHtml(d.stand)}</h2>
+          <h2><span>${escapeHtml(d.stand)}</span>${flagBadge}</h2>
           <div class="field-row"><span class="label">Rue / Place :</span><span>${escapeHtml(d.rue)}</span></div>
           <div class="field-row"><span class="label">Zone :</span><span>${escapeHtml(d.zone)}</span></div>
+          ${d.pedestrian ? `<div class="field-row"><span class="label">Zonage piéton :</span><span>${escapeHtml(d.pedestrian)}</span></div>` : ""}
         </div>
         <div class="badge" title="Pompier">
           <div class="num">${escapeHtml(d.pompier)}</div>
@@ -436,7 +457,7 @@
     searchBox.classList.toggle("has-value", searchInput.value.length > 0);
 
     const filtered = q
-      ? data.filter(d => normalize(d.stand + " " + d.rue + " " + d.pompier + " " + d.zone).includes(q))
+      ? data.filter(d => normalize(d.stand + " " + d.rue + " " + d.pompier + " " + d.zone + " " + (d.pedestrian || "") + " " + (d.flag || "")).includes(q))
       : data;
 
     document.querySelector(".empty")?.remove();
