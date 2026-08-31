@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recherche de stand</title>
+<style>
+  :root{
+    --bg: #F5F7F8;
+    --surface: #FFFFFF;
+    --text: #1B2430;
+    --text-soft: #5B6472;
+    --accent: #1E5F74;
+    --accent-dark: #143F4E;
+    --border: #E1E5E8;
+    --badge-bg: #C1440E;
+    --badge-text: #FFFFFF;
+    --radius: 14px;
+  }
+  *{ box-sizing: border-box; }
+  html, body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  body{
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+  }
+
+  /* ---------- Ecran de verrouillage ---------- */
+  #lockScreen{
+    position: fixed;
+    inset: 0;
+    background: var(--accent-dark);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 100;
+  }
+  #lockScreen.hidden{ display: none; }
+  .lock-box{
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+  .lock-box h1{
+    font-size: 1.15rem;
+    margin: 0 0 6px;
+  }
+  .lock-box p{
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 18px;
+  }
+  .lock-box input{
+    width: 100%;
+    font-size: 16px;
+    padding: 13px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+  .lock-box input:focus{
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.35);
+  }
+  .lock-box button{
+    width: 100%;
+    margin-top: 12px;
+    background: #fff;
+    color: var(--accent-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .lock-error{
+    color: #FFD5CC;
+    font-size: 0.82rem;
+    margin-top: 10px;
+    min-height: 1.2em;
+  }
+
+  /* ---------- Contenu principal ---------- */
+  #app.hidden{ display: none; }
+  header{
+    background: var(--accent-dark);
+    color: #fff;
+    padding: 20px 18px 16px;
+  }
+  header h1{
+    margin:0 0 4px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  header p{
+    margin:0;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.78);
+  }
+  .search-wrap{
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-box{
+    position: relative;
+  }
+  .search-box input{
+    width: 100%;
+    font-size: 16px;
+    padding: 13px 40px 13px 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+  }
+  .search-box input:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(30,95,116,0.15);
+  }
+  .search-box button.clear{
+    position:absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: var(--text-soft);
+    font-size: 20px;
+    line-height: 1;
+    padding: 8px;
+    cursor: pointer;
+    display: none;
+  }
+  .search-box.has-value button.clear{ display:block; }
+  main{
+    flex: 1;
+    padding: 14px 16px 0;
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .count{
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    margin: 4px 2px 14px;
+  }
+  .list{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card .main-info{ min-width: 0; }
+  .card h2{
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    word-break: break-word;
+  }
+  .field-row{
+    display: flex;
+    gap: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+  .field-row .label{ color: var(--text-soft); flex-shrink: 0; }
+  .badge{
+    flex-shrink: 0;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    border-radius: 999px;
+    min-width: 76px;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 4px 6px;
+    box-shadow: 0 2px 6px rgba(193,68,14,0.35);
+  }
+  .badge .num{ font-size: 1.9rem; font-weight: 800; line-height: 1; }
+  .badge .tag{ font-size: 0.68rem; line-height: 1; margin-top: 4px; color: rgba(255,255,255,0.9); }
+  .empty{
+    text-align: center;
+    color: var(--text-soft);
+    padding: 40px 16px;
+    font-size: 0.95rem;
+  }
+  footer{
+    max-width: 640px;
+    margin: 24px auto 0;
+    width: 100%;
+    padding: 0 16px;
+  }
+  .footer-btn{
+    width: 100%;
+    background: transparent;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+  .footer-btn:active{ background: rgba(0,0,0,0.03); }
+  .import-panel{
+    margin-top: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .import-panel p{
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    line-height: 1.4;
+  }
+  .import-panel textarea{
+    width: 100%;
+    min-height: 140px;
+    font-size: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    resize: vertical;
+  }
+  .import-actions{
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn-primary{ background: var(--accent); color: #fff; }
+  .btn-secondary{ background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger{ background: transparent; color: #B23A2E; border: 1px solid #E7C6C1; }
+  .status-msg{ font-size: 0.8rem; margin-top: 8px; }
+  .status-msg.ok{ color: #1E7A45; }
+  .status-msg.err{ color: #B23A2E; }
+  :focus-visible{ outline: 3px solid var(--accent); outline-offset: 1px; }
+  @media (min-width: 480px){ .card h2{ font-size: 1.1rem; } }
+
+  /* ---------- Ajustements paysage (petits écrans) ---------- */
+  @media (orientation: landscape) and (max-height: 500px){
+    header{ padding: 12px 18px 10px; }
+    header h1{ font-size: 1.1rem; margin-bottom: 2px; }
+    header p{ font-size: 0.8rem; }
+    .search-wrap{ padding: 10px 16px 8px; }
+    main{ max-width: 900px; }
+    .list{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .card{ padding: 10px 12px; }
+    .badge{ width: 60px; height: 60px; min-width: 60px; }
+    .badge .num{ font-size: 1.4rem; }
+    footer{ max-width: 900px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-box">
+    <h1>Accès protégé</h1>
+    <p>Entrez le mot de passe pour consulter la liste. Il ne sera demandé qu'une seule fois sur cet appareil.</p>
+    <label for="passwordInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Mot de passe</label>
+    <input id="passwordInput" type="password" inputmode="text" autocomplete="off" placeholder="Mot de passe">
+    <button id="unlockBtn">Valider</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <h1>Recherche de stand</h1>
+    <p>Tapez un nom, une rue ou une zone pour retrouver rue, pompier et zone.</p>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box" id="searchBox">
+      <label for="searchInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Rechercher un stand</label>
+      <input id="searchInput" type="text" inputmode="search" autocomplete="off" placeholder="Nom du stand, rue, zone…">
+      <button class="clear" id="clearBtn" aria-label="Effacer la recherche">×</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="count" id="countMsg" aria-live="polite"></div>
+    <div class="list" id="list"></div>
+  </main>
+
+  <footer>
+    <button class="footer-btn" id="toggleImport">Mettre à jour la liste des stands</button>
+    <div class="import-panel" id="importPanel" style="display:none;">
+      <p>Collez ici les données copiées depuis Excel (colonnes : Stand, Rue / Place, Pompier, Zone). La première ligne peut être l'en-tête. Sur ce type d'hébergement gratuit (sans serveur), la mise à jour est mémorisée sur cet appareil/navigateur — elle ne se synchronise pas automatiquement avec les autres visiteurs.</p>
+      <textarea id="importText" placeholder="Stand	Rue / Place	Pompier	Zone
+Plessis Pâte	Avenue Bobby Sands	13	Entrée publique NO"></textarea>
+      <div class="import-actions">
+        <button class="btn btn-primary" id="saveImport">Enregistrer</button>
+        <button class="btn btn-secondary" id="cancelImport">Annuler</button>
+        <button class="btn btn-danger" id="resetData">Réinitialiser aux données par défaut</button>
+      </div>
+      <div class="status-msg" id="importStatus"></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  /* ---------- Mot de passe ---------- */
+  const PASSWORD = "inter2";
+  const UNLOCK_KEY = "stands_unlocked_v1";
+
+  const lockScreen = document.getElementById("lockScreen");
+  const appEl = document.getElementById("app");
+  const passwordInput = document.getElementById("passwordInput");
+  const unlockBtn = document.getElementById("unlockBtn");
+  const lockError = document.getElementById("lockError");
+
+  function tryUnlock(){
+    if (passwordInput.value === PASSWORD){
+      try { localStorage.setItem(UNLOCK_KEY, "1"); } catch(e){}
+      showApp();
+    } else {
+      lockError.textContent = "Mot de passe incorrect.";
+      passwordInput.value = "";
+      passwordInput.focus();
+    }
+  }
+
+  function showApp(){
+    lockScreen.classList.add("hidden");
+    appEl.classList.remove("hidden");
+    loadData();
+  }
+
+  unlockBtn.addEventListener("click", tryUnlock);
+  passwordInput.addEventListener("keydown", (e) => { if (e.key === "Enter") tryUnlock(); });
+
+  let alreadyUnlocked = false;
+  try { alreadyUnlocked = localStorage.getItem(UNLOCK_KEY) === "1"; } catch(e){}
+  if (alreadyUnlocked){
+    showApp();
+  } else {
+    passwordInput.focus();
+  }
+
+  /* ---------- Stockage (compatible aperçu Claude et hébergement externe) ---------- */
+  async function storageGet(key, shared){
+    if (window.storage){
+      try { return await window.storage.get(key, shared); } catch(e){ /* clé absente ou indisponible */ }
+    }
+    try {
+      const v = localStorage.getItem(key);
+      return v ? { value: v } : null;
+    } catch(e){ return null; }
+  }
+
+  async function storageSet(key, value, shared){
+    if (window.storage){
+      try { return await window.storage.set(key, value, shared); } catch(e){ return null; }
+    }
+    try { localStorage.setItem(key, value); return { value }; } catch(e){ return null; }
+  }
+
+  /* ---------- Données des stands ---------- */
+  const DEFAULT_DATA = [
+    { stand: "Plessis Pâte", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO" },
+    { stand: "Oise Expo", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO" },
+    { stand: "Génération.s", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
+    { stand: "EELV", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
+    { stand: "Debout (la France)", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO" },
+    { stand: "Saint Quentin", rue: "Avenue Bobby Sands", pompier: "11", zone: "Entrée publique NO" }
+  ];
+
+  const STORAGE_KEY = "stands-data-v1";
+  let data = DEFAULT_DATA;
+
+  const listEl = document.getElementById("list");
+  const countEl = document.getElementById("countMsg");
+  const searchInput = document.getElementById("searchInput");
+  const searchBox = document.getElementById("searchBox");
+  const clearBtn = document.getElementById("clearBtn");
+  const toggleImportBtn = document.getElementById("toggleImport");
+  const importPanel = document.getElementById("importPanel");
+  const importText = document.getElementById("importText");
+  const saveImportBtn = document.getElementById("saveImport");
+  const cancelImportBtn = document.getElementById("cancelImport");
+  const resetBtn = document.getElementById("resetData");
+  const importStatus = document.getElementById("importStatus");
+  const mainEl = document.querySelector("main");
+
+  function normalize(str){
+    return (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  }
+
+  function escapeHtml(str){
+    return (str || "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function cardHTML(d){
+    return `
+      <div class="card">
+        <div class="main-info">
+          <h2>${escapeHtml(d.stand)}</h2>
+          <div class="field-row"><span class="label">Rue / Place :</span><span>${escapeHtml(d.rue)}</span></div>
+          <div class="field-row"><span class="label">Zone :</span><span>${escapeHtml(d.zone)}</span></div>
+        </div>
+        <div class="badge" title="Pompier">
+          <div class="num">${escapeHtml(d.pompier)}</div>
+          <div class="tag">pompier</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function render(){
+    const q = normalize(searchInput.value);
+    searchBox.classList.toggle("has-value", searchInput.value.length > 0);
+
+    const filtered = q
+      ? data.filter(d => normalize(d.stand + " " + d.rue + " " + d.pompier + " " + d.zone).includes(q))
+      : data;
+
+    document.querySelector(".empty")?.remove();
+
+    if (filtered.length === 0){
+      listEl.innerHTML = "";
+      countEl.textContent = "";
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = q
+        ? `Aucun stand ne correspond à « ${searchInput.value.trim()} ».`
+        : "Aucune donnée pour le moment.";
+      mainEl.appendChild(empty);
+      return;
+    }
+
+    countEl.textContent = q
+      ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""}`
+      : `${filtered.length} stands au total`;
+    listEl.innerHTML = filtered.map(cardHTML).join("");
+  }
+
+  function splitLine(line){
+    if (line.includes("\t")) return line.split("\t");
+    if (line.includes(";")) return line.split(";");
+    return line.split(",");
+  }
+
+  function parseImport(text){
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length);
+    if (!lines.length) return [];
+    let start = 0;
+    if (normalize(lines[0]).includes("stand")) start = 1;
+    const rows = [];
+    for (let i = start; i < lines.length; i++){
+      const cols = splitLine(lines[i]).map(c => c.trim());
+      if (cols.length >= 4){
+        rows.push({ stand: cols[0], rue: cols[1], pompier: cols[2], zone: cols[3] });
+      }
+    }
+    return rows;
+  }
+
+  async function loadData(){
+    const res = await storageGet(STORAGE_KEY, true);
+    if (res && res.value){
+      try {
+        const parsed = JSON.parse(res.value);
+        if (Array.isArray(parsed) && parsed.length) data = parsed;
+      } catch(e){ /* on garde les données par défaut */ }
+    }
+    render();
+  }
+
+  async function saveData(newData){
+    const result = await storageSet(STORAGE_KEY, JSON.stringify(newData), true);
+    if (!result) return false;
+    data = newData;
+    render();
+    return true;
+  }
+
+  searchInput.addEventListener("input", render);
+  clearBtn.addEventListener("click", () => { searchInput.value = ""; render(); searchInput.focus(); });
+
+  toggleImportBtn.addEventListener("click", () => {
+    const isOpen = importPanel.style.display !== "none";
+    importPanel.style.display = isOpen ? "none" : "block";
+    importStatus.textContent = "";
+  });
+  cancelImportBtn.addEventListener("click", () => {
+    importPanel.style.display = "none";
+    importText.value = "";
+    importStatus.textContent = "";
+  });
+
+  saveImportBtn.addEventListener("click", async () => {
+    const rows = parseImport(importText.value);
+    if (!rows.length){
+      importStatus.textContent = "Aucune ligne valide trouvée. Vérifiez le format (4 colonnes par ligne).";
+      importStatus.className = "status-msg err";
+      return;
+    }
+    const ok = await saveData(rows);
+    importStatus.textContent = ok ? `${rows.length} stands enregistrés.` : "Erreur lors de l'enregistrement, réessayez.";
+    importStatus.className = "status-msg " + (ok ? "ok" : "err");
+    if (ok) importText.value = "";
+  });
+
+  resetBtn.addEventListener("click", async () => {
+    const ok = await saveData(DEFAULT_DATA);
+    importStatus.textContent = ok ? "Données par défaut restaurées." : "Erreur lors de la réinitialisation.";
+    importStatus.className = "status-msg " + (ok ? "ok" : "err");
+  });
+</script>
+
+</body>
+</html>
