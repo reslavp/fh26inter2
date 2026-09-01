@@ -330,6 +330,22 @@
   .badge:focus-visible{ outline: 3px solid var(--accent-dark); outline-offset: 2px; }
   .badge .num{ font-size: 1.9rem; font-weight: 800; line-height: 1; }
   .badge .tag{ font-size: 0.68rem; line-height: 1; margin-top: 4px; color: rgba(255,255,255,0.9); }
+  .badge-col{
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge-secondary{
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    background: var(--accent-dark);
+    box-shadow: 0 2px 6px rgba(20,63,78,0.4);
+  }
+  .badge-secondary .num{ font-size: 1.3rem; }
+  .badge-secondary .tag{ font-size: 0.58rem; }
 
   .filter-banner{
     display: flex;
@@ -569,121 +585,145 @@
      données, éditer directement ce fichier (tableau DEFAULT_DATA) et
      redéployer sur l'hébergement. */
   const DEFAULT_DATA = [
-    { stand: "Plessis Pâte", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Oise Expo", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Génération.s", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "EELV", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Debout (la France)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Saint Quentin", flag: "X", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "FD Ain", flag: "", rue: "Avenue Bobby Sands", pompier: "11", zone: "Jack Ralite", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "FSGT", flag: "", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Justice pour Adama", flag: "", rue: "Place Odette Niles", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Les Inverties", flag: "", rue: "Avenue Bobby Sands", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "NPA", flag: "X", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Vitry Rassemblé(e)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Confédération Paysanne", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Red Jeunes", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Rev", flag: "", rue: "Avenue Bobby Sands", pompier: "12", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
-    { stand: "Non Violence", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "Santé en Danger", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "SOS Racisme", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "La Jeunesse Communiste", flag: "", rue: "Avenue Frida Kahlo", pompier: "11-2", zone: "Jack Ralite", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "UNEF", flag: "", rue: "Avenue Frida Kahlo", pompier: "11-2", zone: "Jack Ralite", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "PCF 04", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "NPA Révolutionnaires", flag: "X", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "Avocats", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "CGT FTDNEEA", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "USS", flag: "", rue: "Place Agnès Varda", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "JOC", flag: "", rue: "Avenue Frida Kahlo", pompier: "11", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
-    { stand: "Safe Plaine", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Bobigny", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "FD93", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Roissy", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Tremblay", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Livry", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
-    { stand: "Aubervilliers", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
-    { stand: "Le Blanc-Mesnil", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
-    { stand: "St Denis", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
-    { stand: "Bretigny", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "LDH", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "La Familiale", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Montfermeil-Clichy", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Bagnolet-Montreuil", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
-    { stand: "Saint-Ouen-Épinay", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
-    { stand: "Noisy-le-Sec Bondy", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
-    { stand: "Pantin", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
-    { stand: "Vienne", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
-    { stand: "Cop'i", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "Extinction Rebellion", flag: "X", rue: "Avenue Frida Kahlo", pompier: "2", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "FSE", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "AJC / BDR", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "L'Après", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
-    { stand: "Jeunes ADM(D)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "La Cimade", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Parti Socialiste", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Amis du Temps des Cerises", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "FD Doubs", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Landes", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Pyrénées-Atlantiques (64)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Dordogne-Gironde", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Côte d'Or 21", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Jura", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Belfort", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "FD de l'Yonne", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Haute-Saône", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Charente-Maritime", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Lot-et-Garonne (47)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Haute-Vienne", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "Amis Huma", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
-    { stand: "FD Drôme", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Allier 03", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Vaucluse", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Haute Corse", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11-4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "Les 3 Bougnats", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "FD Isère", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Rhône-Alpes 2 Savoies", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Ardèche & Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "FSU", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "VTS", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "Forum social", flag: "", rue: "Avenue Louis Viannet", pompier: "11", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Amnesty International", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "JC Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Maine-et-Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "JC Maine-et-Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "JC Vendée", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Vendée", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Pays Yonnais", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "FD Yvelines", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "JC Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
-    { stand: "Val d'Oise (bloc 1)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
-    { stand: "Val d'Oise (bloc 2)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
-    { stand: "Val d'Oise (bloc 3)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
-    { stand: "Coopératives des Élus Communistes", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
-    { stand: "SPL Air", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
-    { stand: "ARS", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone O" },
-    { stand: "FMF", flag: "", rue: "Esplanade  Manouchian", pompier: "5", zone: "Place agora", pedestrian: "Agora - forum social Zone O" },
-    { stand: "Femmes Solidaires", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11-4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "Chorale populaire de Paris", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11-4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "La France Insoumise", flag: "X", rue: "Rue Rosa Luxembourg", pompier: "11-4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "Livres en Luttes", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11-4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
-    { stand: "Expo Humanité (FNSAC-CGT)", flag: "", rue: "Rue Rosa Luxembourg", pompier: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "Village des Médias Indépendants", flag: "", rue: "Rue Rosa Luxembourg", pompier: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "Global Chargeur / ACER", flag: "", rue: "Voie Pompiers", pompier: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "La Riposte", flag: "", rue: "Voie Pompiers", pompier: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "Attac", flag: "", rue: "Voie Pompiers", pompier: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "Marne", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Gers", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Occitanie", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Haute-Garonne", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Aveyron", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Cuba Si France / SIPC", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Save", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Nous Toutes", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "S2LH", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Gard", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Pyrénées-Orientales (66)", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
-    { stand: "Nova", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" }
+    { stand: "Plessis Pâte", flag: "", rue: "Avenue Bobby Sands", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Oise Expo", flag: "", rue: "Avenue Bobby Sands", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Génération.s", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "EELV", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Debout (la France)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Saint Quentin", flag: "X", rue: "Avenue Bobby Sands", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "FD Ain", flag: "", rue: "Avenue Bobby Sands", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "FSGT", flag: "", rue: "Place Odette Niles", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Justice pour Adama", flag: "", rue: "Place Odette Niles", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Les Inverties", flag: "", rue: "Avenue Bobby Sands", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "NPA", flag: "X", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Vitry Rassemblé(e)", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Confédération Paysanne", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Red Jeunes", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Rev", flag: "", rue: "Avenue Bobby Sands", pompier: "12", pompier2: "", zone: "Jack Ralite", pedestrian: "Rue Entrée publique NO - Jack Ralite" },
+    { stand: "Non Violence", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "Santé en Danger", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "SOS Racisme", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "La Jeunesse Communiste", flag: "", rue: "Avenue Frida Kahlo", pompier: "11", pompier2: "2", zone: "Jack Ralite", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "UNEF", flag: "", rue: "Avenue Frida Kahlo", pompier: "11", pompier2: "2", zone: "Jack Ralite", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "PCF 04", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "NPA Révolutionnaires", flag: "X", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "Avocats", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "CGT FTDNEEA", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "USS", flag: "", rue: "Place Agnès Varda", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "JOC", flag: "", rue: "Avenue Frida Kahlo", pompier: "11", pompier2: "", zone: "Jack Ralite", pedestrian: "Place Jack Ralite" },
+    { stand: "Safe Plaine", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Bobigny", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "FD93", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Roissy", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Tremblay", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Livry", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
+    { stand: "Aubervilliers", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
+    { stand: "Le Blanc-Mesnil", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
+    { stand: "St Denis", flag: "", rue: "Avenue Marcel Cachin", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Rue Entrée publique NO - Plaine baker" },
+    { stand: "Bretigny", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "LDH", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "La Familiale", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Montfermeil-Clichy", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Bagnolet-Montreuil", flag: "", rue: "Avenue Marcel Cachin", pompier: "13", pompier2: "", zone: "Entrée publique NO", pedestrian: "Rue Entrée publique NO - Plaine Baker" },
+    { stand: "Saint-Ouen-Épinay", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
+    { stand: "Noisy-le-Sec Bondy", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
+    { stand: "Pantin", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
+    { stand: "Vienne", flag: "", rue: "Plaine Emmeline Pankhurst", pompier: "2", pompier2: "", zone: "Plaine baker", pedestrian: "Plaine baker - Fond Plaine" },
+    { stand: "Cop'i", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", pompier2: "", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "Extinction Rebellion", flag: "X", rue: "Avenue Frida Kahlo", pompier: "2", pompier2: "", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "FSE", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", pompier2: "", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "AJC / BDR", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", pompier2: "", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "L'Après", flag: "", rue: "Avenue Frida Kahlo", pompier: "2", pompier2: "", zone: "Place Jack Ralite - Plaine Baker", pedestrian: "Place Jack Ralite - Plaine Baker" },
+    { stand: "Jeunes ADM(D)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "La Cimade", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Parti Socialiste", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Amis du Temps des Cerises", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "FD Doubs", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Landes", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Pyrénées-Atlantiques (64)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Dordogne-Gironde", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Côte d'Or 21", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Jura", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "2", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Belfort", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "FD de l'Yonne", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Haute-Saône", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Charente-Maritime", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Lot-et-Garonne (47)", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Haute-Vienne", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "Amis Huma", flag: "", rue: "Avenue Pierre Bourdieu", pompier: "3", pompier2: "", zone: "Plaine Baker Zone Est", pedestrian: "Plaine baker - Agora - Côté Ouest" },
+    { stand: "FD Drôme", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Allier 03", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Vaucluse", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Haute Corse", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "Les 3 Bougnats", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "FD Isère", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Rhône-Alpes 2 Savoies", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Ardèche & Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "FSU", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "VTS", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "Forum social", flag: "", rue: "Avenue Louis Viannet", pompier: "11", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Amnesty International", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "JC Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Maine-et-Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "JC Maine-et-Loire", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "JC Vendée", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Vendée", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Pays Yonnais", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "FD Yvelines", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "JC Loire-Atlantique", flag: "", rue: "Avenue Louis Viannet", pompier: "10", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite - Forum social" },
+    { stand: "Val d'Oise (bloc 1)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
+    { stand: "Val d'Oise (bloc 2)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
+    { stand: "Val d'Oise (bloc 3)", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
+    { stand: "Coopératives des Élus Communistes", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
+    { stand: "SPL Air", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone NO" },
+    { stand: "ARS", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone O" },
+    { stand: "FMF", flag: "", rue: "Esplanade  Manouchian", pompier: "5", pompier2: "", zone: "Place agora", pedestrian: "Agora - forum social Zone O" },
+    { stand: "Femmes Solidaires", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "Chorale populaire de Paris", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "La France Insoumise", flag: "X", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "Livres en Luttes", flag: "", rue: "Rue Rosa Luxembourg", pompier: "11", pompier2: "4", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone NO" },
+    { stand: "Expo Humanité (FNSAC-CGT)", flag: "", rue: "Rue Rosa Luxembourg", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
+    { stand: "Village des Médias Indépendants", flag: "", rue: "Rue Rosa Luxembourg", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
+    { stand: "Global Chargeur / ACER", flag: "", rue: "Voie Pompiers", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
+    { stand: "La Riposte", flag: "", rue: "Voie Pompiers", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
+    { stand: "Attac", flag: "", rue: "Voie Pompiers", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
+    { stand: "Marne", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Gers", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Occitanie", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Haute-Garonne", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Aveyron", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Cuba Si France / SIPC", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Save", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Nous Toutes", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "S2LH", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Gard", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Pyrénées-Orientales (66)", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Nova", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
+    { stand: "Snecma Corbeil-Villaroche", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Grigny", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Charente", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Val-d'Yerres Val-de-Seine", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Corbeil-Essonnes", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Défense de l'Hôpital", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Meurthe-et-Moselle", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Éclair", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Moselle", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "FD 92", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Malakoff", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Nanterre", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "MJCF Hauts-de-Seine", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Scène 92", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Gennevilliers", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Antony", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Asnières", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Printemps des Corbeil", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Val-de-Seine Ris-Orangis Draveil", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "P.C.F Sud Essonne", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Morsang", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Nord Essonne", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Hurepoix", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "Yvette / CEA", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" }
   ];
 
   let data = DEFAULT_DATA;
@@ -716,10 +756,17 @@
           <div class="field-row"><span class="label">Zone</span><span class="value">${escapeHtml(d.zone)}</span></div>
           ${d.pedestrian ? `<div class="field-row" style="margin-bottom:0;"><span class="label">Zonage piéton</span><span class="value">${escapeHtml(d.pedestrian)}</span></div>` : ""}
         </div>
-        <button type="button" class="badge" onclick="filterByPompier('${escapeHtml(d.pompier)}')" aria-label="Voir uniquement les stands du poste pompier ${escapeHtml(d.pompier)}">
-          <div class="num">${escapeHtml(d.pompier)}</div>
-          <div class="tag">pompier</div>
-        </button>
+        <div class="badge-col">
+          <button type="button" class="badge" onclick="filterByPompier('${escapeHtml(d.pompier)}')" aria-label="Voir uniquement les stands du poste pompier ${escapeHtml(d.pompier)}">
+            <div class="num">${escapeHtml(d.pompier)}</div>
+            <div class="tag">pompier</div>
+          </button>
+          ${d.pompier2 ? `
+          <button type="button" class="badge badge-secondary" onclick="filterByPompier('${escapeHtml(d.pompier2)}')" aria-label="Voir uniquement les stands du poste pompier ${escapeHtml(d.pompier2)}">
+            <div class="num">${escapeHtml(d.pompier2)}</div>
+            <div class="tag">pompier 2</div>
+          </button>` : ""}
+        </div>
       </div>
     `;
   }
@@ -728,7 +775,7 @@
     const q = normalize(searchInput.value);
     searchBox.classList.toggle("has-value", searchInput.value.length > 0);
 
-    const base = activeFilter ? data.filter(d => d.pompier === activeFilter) : data;
+    const base = activeFilter ? data.filter(d => d.pompier === activeFilter || d.pompier2 === activeFilter) : data;
     const filtered = q
       ? base.filter(d => normalize(d.stand + " " + d.rue + " " + d.pompier + " " + d.zone + " " + (d.pedestrian || "") + " " + (d.flag || "")).includes(q))
       : base;
