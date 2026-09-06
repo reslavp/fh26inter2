@@ -500,6 +500,24 @@
     user-select: none;
     -webkit-touch-callout: none;
   }
+  .plan-tiles{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .plan-tile{
+    position: absolute;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .plan-tile.loaded{ opacity: 1; }
   .stand-marker{
     position: absolute;
     width: 64px;
@@ -568,6 +586,7 @@
   <div class="plan-scroll">
     <div class="plan-stage">
       <img src="plan-hd.jpg" alt="Plan général du site" class="plan-img" id="planImg">
+      <div class="plan-tiles" id="planTiles"></div>
       <div class="stand-marker" id="standMarker" style="display:none;"></div>
       <div class="stand-highlight" id="standHighlight" style="display:none;"></div>
     </div>
@@ -1460,6 +1479,7 @@
     updatePlanCloseButtonPosition();
     resetPlanTransform();
     initPlanGestures();
+    buildPlanTiles();
 
     if (typeof fx === "number" && typeof fy === "number"){
       marker.style.left = (fx * 100) + "%";
@@ -1509,6 +1529,56 @@
   const PLAN_MIN_SCALE = 1, PLAN_MAX_SCALE = 8;
   let planGesture = null;
 
+  /* ---------- Tuiles haute résolution (chargées seulement quand nécessaire) ---------- */
+  const TILE_COLS = 5, TILE_ROWS = 4;
+  const TILE_ZOOM_THRESHOLD = 1.3;
+
+  function buildPlanTiles(){
+    const container = document.getElementById("planTiles");
+    if (!container || container.dataset.built) return;
+    container.dataset.built = "1";
+    for (let row = 0; row < TILE_ROWS; row++){
+      for (let col = 0; col < TILE_COLS; col++){
+        const tile = document.createElement("img");
+        tile.className = "plan-tile";
+        tile.alt = "";
+        tile.dataset.row = row;
+        tile.dataset.col = col;
+        tile.dataset.src = `tiles/plan-tile-${row}-${col}.jpg`;
+        tile.style.left = (col * 100 / TILE_COLS) + "%";
+        tile.style.top = (row * 100 / TILE_ROWS) + "%";
+        tile.style.width = (100 / TILE_COLS) + "%";
+        tile.style.height = (100 / TILE_ROWS) + "%";
+        tile.onload = () => tile.classList.add("loaded");
+        container.appendChild(tile);
+      }
+    }
+  }
+
+  function updateVisibleTiles(){
+    if (planScale <= TILE_ZOOM_THRESHOLD || !planBaseRect) return;
+    const scrollEl = document.querySelector(".plan-scroll");
+    if (!scrollEl) return;
+    const scrollRect = scrollEl.getBoundingClientRect();
+
+    const fx0 = (scrollRect.left - planBaseRect.left - planX) / planScale / planBaseRect.width;
+    const fx1 = (scrollRect.left + scrollRect.width - planBaseRect.left - planX) / planScale / planBaseRect.width;
+    const fy0 = (scrollRect.top - planBaseRect.top - planY) / planScale / planBaseRect.height;
+    const fy1 = (scrollRect.top + scrollRect.height - planBaseRect.top - planY) / planScale / planBaseRect.height;
+
+    document.querySelectorAll(".plan-tile").forEach(tile => {
+      if (tile.dataset.loaded) return;
+      const row = parseInt(tile.dataset.row, 10), col = parseInt(tile.dataset.col, 10);
+      const tx0 = col / TILE_COLS, tx1 = (col + 1) / TILE_COLS;
+      const ty0 = row / TILE_ROWS, ty1 = (row + 1) / TILE_ROWS;
+      const overlaps = tx0 < fx1 && tx1 > fx0 && ty0 < fy1 && ty1 > fy0;
+      if (overlaps){
+        tile.dataset.loaded = "1";
+        tile.src = tile.dataset.src;
+      }
+    });
+  }
+
   function resetPlanTransform(){
     planScale = 1; planX = 0; planY = 0;
     applyPlanTransform();
@@ -1527,6 +1597,7 @@
     if (marker){
       marker.style.setProperty("--counter-scale", 1 / planScale);
     }
+    updateVisibleTiles();
   }
 
   function clampPlanPan(){
