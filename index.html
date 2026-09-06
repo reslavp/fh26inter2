@@ -475,9 +475,8 @@
   .plan-scroll{
     width: 100%;
     height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pinch-zoom pan-x pan-y;
+    overflow: hidden;
+    touch-action: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -487,6 +486,8 @@
     display: inline-block;
     max-width: 100%;
     max-height: 100%;
+    transform-origin: 0 0;
+    will-change: transform;
   }
   .plan-img{
     max-width: 100%;
@@ -495,6 +496,8 @@
     height: auto;
     display: block;
     margin: auto;
+    -webkit-user-drag: none;
+    user-select: none;
   }
   .stand-marker{
     position: absolute;
@@ -1339,7 +1342,10 @@
     "Nhân Dan Vietnam": { x0: 0.9227, x1: 0.9328, top: 0.1756, bottom: 0.1794 },
     "2ATF": { x0: 0.9242, x1: 0.9294, top: 0.2317, bottom: 0.2355 },
     "Paxason Organe presse laos": { x0: 0.9225, x1: 0.9314, top: 0.1908, bottom: 0.1946 },
-    "Diamant Afrique": { x0: 0.868, x1: 0.8713, top: 0.2398, bottom: 0.2427 }
+    "Diamant Afrique": { x0: 0.868, x1: 0.8713, top: 0.2398, bottom: 0.2427 },
+    "Val-d'Yerres Val-de-Seine": { x0: 0.615, x1: 0.6334, top: 0.194, bottom: 0.1999 },
+    "Choisy-le-Roi / Villeneuve-Saint-Georges": { x0: 0.6626, x1: 0.6839, top: 0.2938, bottom: 0.317 },
+    "Tran To Nga Vietnam comité contre pétrochimie": { x0: 0.883, x1: 0.8935, top: 0.2512, bottom: 0.2549 }
   };
 
   const RUE_COORDS = {
@@ -1426,6 +1432,8 @@
     const highlight = document.getElementById("standHighlight");
     overlay.classList.remove("hidden");
     updatePlanCloseButtonPosition();
+    resetPlanTransform();
+    initPlanGestures();
 
     if (typeof fx === "number" && typeof fy === "number"){
       marker.style.left = (fx * 100) + "%";
@@ -1445,10 +1453,6 @@
     } else {
       highlight.style.display = "none";
     }
-
-    const scrollEl = document.querySelector(".plan-scroll");
-    scrollEl.scrollLeft = 0;
-    scrollEl.scrollTop = 0;
   }
 
   function closePlanOverlay(){
@@ -1457,6 +1461,119 @@
     document.getElementById("planOverlay").classList.add("hidden");
     const btn = document.querySelector(".plan-close");
     if (btn){ btn.style.top = ""; btn.style.right = ""; }
+    resetPlanTransform();
+  }
+
+  /* ---------- Pinch-zoom / pan manuel (le bouton fermer garde une taille fixe) ---------- */
+  let planScale = 1, planX = 0, planY = 0;
+  let planBaseRect = null; // rect du plan quand scale=1, translate=0 (mesuré une fois à l'ouverture)
+  const PLAN_MIN_SCALE = 1, PLAN_MAX_SCALE = 6;
+  let planGesture = null;
+
+  function resetPlanTransform(){
+    planScale = 1; planX = 0; planY = 0;
+    applyPlanTransform();
+    requestAnimationFrame(() => {
+      const stage = document.querySelector(".plan-stage");
+      if (stage) planBaseRect = stage.getBoundingClientRect();
+    });
+  }
+
+  function applyPlanTransform(){
+    const stage = document.querySelector(".plan-stage");
+    if (stage){
+      stage.style.transform = `translate(${planX}px, ${planY}px) scale(${planScale})`;
+    }
+  }
+
+  function clampPlanPan(){
+    const scrollEl = document.querySelector(".plan-scroll");
+    if (!scrollEl || !planBaseRect) return;
+    const scaledW = planBaseRect.width * planScale;
+    const scaledH = planBaseRect.height * planScale;
+    const viewW = scrollEl.clientWidth, viewH = scrollEl.clientHeight;
+    if (scaledW <= viewW){
+      planX = (viewW - scaledW) / 2 - planBaseRect.left;
+    } else {
+      const minX = viewW - planBaseRect.left - scaledW;
+      const maxX = -planBaseRect.left;
+      planX = Math.max(minX, Math.min(maxX, planX));
+    }
+    if (scaledH <= viewH){
+      planY = (viewH - scaledH) / 2 - planBaseRect.top;
+    } else {
+      const minY = viewH - planBaseRect.top - scaledH;
+      const maxY = -planBaseRect.top;
+      planY = Math.max(minY, Math.min(maxY, planY));
+    }
+  }
+
+  function touchDist(t0, t1){
+    return Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+  }
+  function touchMid(t0, t1){
+    return { x: (t0.clientX + t1.clientX) / 2, y: (t0.clientY + t1.clientY) / 2 };
+  }
+
+  function initPlanGestures(){
+    const scrollEl = document.querySelector(".plan-scroll");
+    if (!scrollEl || scrollEl.dataset.gesturesBound) return;
+    scrollEl.dataset.gesturesBound = "1";
+
+    scrollEl.addEventListener("touchstart", (e) => {
+      if (!planBaseRect) return;
+      if (e.touches.length === 2){
+        const mid = touchMid(e.touches[0], e.touches[1]);
+        planGesture = {
+          mode: "pinch",
+          startDist: touchDist(e.touches[0], e.touches[1]),
+          startScale: planScale,
+          // point local (dans le repère non transformé du plan) sous le doigt
+          localX: (mid.x - planBaseRect.left - planX) / planScale,
+          localY: (mid.y - planBaseRect.top - planY) / planScale
+        };
+      } else if (e.touches.length === 1){
+        planGesture = {
+          mode: "pan",
+          startX: planX, startY: planY,
+          startPointX: e.touches[0].clientX,
+          startPointY: e.touches[0].clientY
+        };
+      }
+    }, { passive: true });
+
+    scrollEl.addEventListener("touchmove", (e) => {
+      if (!planGesture || !planBaseRect) return;
+      e.preventDefault();
+      if (planGesture.mode === "pinch" && e.touches.length === 2){
+        const dist = touchDist(e.touches[0], e.touches[1]);
+        const ratio = dist / planGesture.startDist;
+        planScale = Math.max(PLAN_MIN_SCALE, Math.min(PLAN_MAX_SCALE, planGesture.startScale * ratio));
+        const mid = touchMid(e.touches[0], e.touches[1]);
+        planX = mid.x - planBaseRect.left - planGesture.localX * planScale;
+        planY = mid.y - planBaseRect.top - planGesture.localY * planScale;
+        clampPlanPan();
+        applyPlanTransform();
+      } else if (planGesture.mode === "pan" && e.touches.length === 1){
+        planX = planGesture.startX + (e.touches[0].clientX - planGesture.startPointX);
+        planY = planGesture.startY + (e.touches[0].clientY - planGesture.startPointY);
+        clampPlanPan();
+        applyPlanTransform();
+      }
+    }, { passive: false });
+
+    scrollEl.addEventListener("touchend", (e) => {
+      if (e.touches.length === 0){
+        planGesture = null;
+      } else if (e.touches.length === 1){
+        planGesture = {
+          mode: "pan",
+          startX: planX, startY: planY,
+          startPointX: e.touches[0].clientX,
+          startPointY: e.touches[0].clientY
+        };
+      }
+    }, { passive: true });
   }
 
   function toggleHeaderPanel(key){
