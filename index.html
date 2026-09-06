@@ -567,7 +567,7 @@
   <button type="button" class="plan-quality-toggle" id="planQualityToggle" onclick="togglePlanQuality()" aria-label="Changer la qualité du plan">SD</button>
   <div class="plan-scroll">
     <div class="plan-stage">
-      <img src="plan.png" alt="Plan général du site" class="plan-img" id="planImg">
+      <img src="plan-hd.jpg" alt="Plan général du site" class="plan-img" id="planImg">
       <div class="stand-marker" id="standMarker" style="display:none;"></div>
       <div class="stand-highlight" id="standHighlight" style="display:none;"></div>
     </div>
@@ -1499,14 +1499,14 @@
     const btn = document.getElementById("planQualityToggle");
     if (!img || !btn) return;
     planIsHD = !planIsHD;
-    img.src = planIsHD ? "plan.png" : "plan.jpg";
+    img.src = planIsHD ? "plan-hd.jpg" : "plan-sd.jpg";
     btn.textContent = planIsHD ? "SD" : "HD";
   }
 
   /* ---------- Pinch-zoom / pan manuel (le bouton fermer garde une taille fixe) ---------- */
   let planScale = 1, planX = 0, planY = 0;
   let planBaseRect = null; // rect du plan quand scale=1, translate=0 (mesuré une fois à l'ouverture)
-  const PLAN_MIN_SCALE = 1, PLAN_MAX_SCALE = 6;
+  const PLAN_MIN_SCALE = 1, PLAN_MAX_SCALE = 8;
   let planGesture = null;
 
   function resetPlanTransform(){
