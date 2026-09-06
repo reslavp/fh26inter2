@@ -893,11 +893,19 @@
   const mainEl = document.querySelector("main");
 
   function normalize(str){
-    return (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    return (str || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
   }
 
   function escapeHtml(str){
     return (str || "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function escapeJsArg(str){
+    return (str || "").toString()
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
   }
 
   function cardHTML(d){
@@ -907,7 +915,7 @@
     return `
       <div class="card">
         <div class="main-info">
-          <h2><span class="stand-name" role="button" tabindex="0" onclick="zoomToStand('${escapeHtml(d.rue)}')" onkeydown="if(event.key==='Enter')zoomToStand('${escapeHtml(d.rue)}')">${escapeHtml(d.stand)}</span>${flagBadge}</h2>
+          <h2><span class="stand-name" role="button" tabindex="0" onclick="zoomToStand('${escapeJsArg(d.rue)}')" onkeydown="if(event.key==='Enter')zoomToStand('${escapeJsArg(d.rue)}')">${escapeHtml(d.stand)}</span>${flagBadge}</h2>
           <div class="field-row"><span class="label">Rue / Place</span><span class="value">${escapeHtml(d.rue)}</span></div>
           <div class="field-row"><span class="label">Zone</span><span class="value">${escapeHtml(d.zone)}</span></div>
           ${d.pedestrian ? `<div class="field-row" style="margin-bottom:0;"><span class="label">Zonage piéton</span><span class="value">${escapeHtml(d.pedestrian)}</span></div>` : ""}
@@ -1117,8 +1125,13 @@
     "Voie Pompiers": { x: 0.47, y: 0.30 }
   };
 
+  const NORMALIZED_RUE_COORDS = {};
+  Object.keys(RUE_COORDS).forEach(key => {
+    NORMALIZED_RUE_COORDS[normalize(key)] = RUE_COORDS[key];
+  });
+
   function zoomToStand(rue){
-    const coord = RUE_COORDS[rue];
+    const coord = NORMALIZED_RUE_COORDS[normalize(rue)];
     if (coord){
       openPlanImage(coord.x, coord.y);
     } else {
@@ -1133,24 +1146,26 @@
     overlay.classList.remove("hidden");
 
     const applyView = () => {
-      if (typeof fx === "number" && typeof fy === "number" && imgEl.naturalWidth){
-        const ZOOM = 3.2;
-        const vw = scrollEl.clientWidth;
-        const ratio = imgEl.naturalHeight / imgEl.naturalWidth;
-        const dispW = vw * ZOOM;
-        const dispH = dispW * ratio;
-        imgEl.style.width = dispW + "px";
-        imgEl.style.height = "auto";
-        requestAnimationFrame(() => {
-          scrollEl.scrollLeft = Math.max(0, dispW * fx - scrollEl.clientWidth / 2);
-          scrollEl.scrollTop = Math.max(0, dispH * fy - scrollEl.clientHeight / 2);
-        });
-      } else {
-        imgEl.style.width = "100%";
-        imgEl.style.height = "auto";
-        scrollEl.scrollLeft = 0;
-        scrollEl.scrollTop = 0;
-      }
+      requestAnimationFrame(() => {
+        if (typeof fx === "number" && typeof fy === "number" && imgEl.naturalWidth){
+          const ZOOM = 3.2;
+          const vw = scrollEl.clientWidth || window.innerWidth;
+          const ratio = imgEl.naturalHeight / imgEl.naturalWidth;
+          const dispW = vw * ZOOM;
+          const dispH = dispW * ratio;
+          imgEl.style.width = dispW + "px";
+          imgEl.style.height = "auto";
+          requestAnimationFrame(() => {
+            scrollEl.scrollLeft = Math.max(0, dispW * fx - scrollEl.clientWidth / 2);
+            scrollEl.scrollTop = Math.max(0, dispH * fy - scrollEl.clientHeight / 2);
+          });
+        } else {
+          imgEl.style.width = "100%";
+          imgEl.style.height = "auto";
+          scrollEl.scrollLeft = 0;
+          scrollEl.scrollTop = 0;
+        }
+      });
     };
 
     if (imgEl.complete && imgEl.naturalWidth){
