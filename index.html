@@ -538,15 +538,34 @@
     line-height: 1;
     cursor: pointer;
   }
+  .plan-quality-toggle{
+    position: fixed;
+    top: 12px;
+    right: 60px;
+    z-index: 201;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
 <div id="planOverlay" class="plan-overlay hidden">
   <button type="button" class="plan-close" onclick="closePlanOverlay()" aria-label="Fermer le plan">×</button>
+  <button type="button" class="plan-quality-toggle" id="planQualityToggle" onclick="togglePlanQuality()" aria-label="Changer la qualité du plan">SD</button>
   <div class="plan-scroll">
     <div class="plan-stage">
-      <img src="plan.png" alt="Plan général du site" class="plan-img">
+      <img src="plan.png" alt="Plan général du site" class="plan-img" id="planImg">
       <div class="stand-marker" id="standMarker" style="display:none;"></div>
       <div class="stand-highlight" id="standHighlight" style="display:none;"></div>
     </div>
@@ -1410,14 +1429,19 @@
 
   function updatePlanCloseButtonPosition(){
     const btn = document.querySelector(".plan-close");
+    const qualityBtn = document.querySelector(".plan-quality-toggle");
     const overlay = document.getElementById("planOverlay");
     if (!btn || overlay.classList.contains("hidden")) return;
     const vv = window.visualViewport;
     if (vv){
       const top = vv.offsetTop + 12;
-      const right = (window.innerWidth - (vv.offsetLeft + vv.width)) + 12;
+      const rightEdge = window.innerWidth - (vv.offsetLeft + vv.width);
       btn.style.top = top + "px";
-      btn.style.right = right + "px";
+      btn.style.right = (rightEdge + 12) + "px";
+      if (qualityBtn){
+        qualityBtn.style.top = top + "px";
+        qualityBtn.style.right = (rightEdge + 60) + "px";
+      }
     }
   }
 
@@ -1461,7 +1485,20 @@
     document.getElementById("planOverlay").classList.add("hidden");
     const btn = document.querySelector(".plan-close");
     if (btn){ btn.style.top = ""; btn.style.right = ""; }
+    const qualityBtn = document.querySelector(".plan-quality-toggle");
+    if (qualityBtn){ qualityBtn.style.top = ""; qualityBtn.style.right = ""; }
     resetPlanTransform();
+  }
+
+  let planIsHD = true; // le PNG (HD) est l'affichage par défaut
+
+  function togglePlanQuality(){
+    const img = document.getElementById("planImg");
+    const btn = document.getElementById("planQualityToggle");
+    if (!img || !btn) return;
+    planIsHD = !planIsHD;
+    img.src = planIsHD ? "plan.png" : "plan.jpg";
+    btn.textContent = planIsHD ? "SD" : "HD";
   }
 
   /* ---------- Pinch-zoom / pan manuel (le bouton fermer garde une taille fixe) ---------- */
