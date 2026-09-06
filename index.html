@@ -482,6 +482,12 @@
     align-items: center;
     justify-content: center;
   }
+  .plan-stage{
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+  }
   .plan-img{
     max-width: 100%;
     max-height: 100%;
@@ -489,6 +495,18 @@
     height: auto;
     display: block;
     margin: auto;
+  }
+  .stand-marker{
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+    border: 6px solid #E11D2A;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.85), 0 0 14px rgba(0,0,0,0.5);
+    pointer-events: none;
   }
   .plan-close{
     position: fixed;
@@ -512,7 +530,10 @@
 <div id="planOverlay" class="plan-overlay hidden">
   <button type="button" class="plan-close" onclick="closePlanOverlay()" aria-label="Fermer le plan">×</button>
   <div class="plan-scroll">
-    <img src="plan.jpg" alt="Plan général du site" class="plan-img">
+    <div class="plan-stage">
+      <img src="plan.jpg" alt="Plan général du site" class="plan-img">
+      <div class="stand-marker" id="standMarker" style="display:none;"></div>
+    </div>
   </div>
 </div>
 
@@ -1371,44 +1392,24 @@
 
   function openPlanImage(fx, fy){
     const overlay = document.getElementById("planOverlay");
-    const scrollEl = document.querySelector(".plan-scroll");
-    const imgEl = document.querySelector(".plan-img");
+    const marker = document.getElementById("standMarker");
     overlay.classList.remove("hidden");
 
-    const applyView = () => {
-      requestAnimationFrame(() => {
-        if (typeof fx === "number" && typeof fy === "number" && imgEl.naturalWidth){
-          const ZOOM = 3.2;
-          const vw = scrollEl.clientWidth || window.innerWidth;
-          const ratio = imgEl.naturalHeight / imgEl.naturalWidth;
-          const dispW = vw * ZOOM;
-          const dispH = dispW * ratio;
-          imgEl.style.width = dispW + "px";
-          imgEl.style.height = "auto";
-          requestAnimationFrame(() => {
-            scrollEl.scrollLeft = Math.max(0, dispW * fx - scrollEl.clientWidth / 2);
-            scrollEl.scrollTop = Math.max(0, dispH * fy - scrollEl.clientHeight / 2);
-          });
-        } else {
-          imgEl.style.width = "100%";
-          imgEl.style.height = "auto";
-          scrollEl.scrollLeft = 0;
-          scrollEl.scrollTop = 0;
-        }
-      });
-    };
-
-    if (imgEl.complete && imgEl.naturalWidth){
-      applyView();
+    if (typeof fx === "number" && typeof fy === "number"){
+      marker.style.left = (fx * 100) + "%";
+      marker.style.top = (fy * 100) + "%";
+      marker.style.display = "block";
     } else {
-      imgEl.onload = applyView;
+      marker.style.display = "none";
     }
+
+    const scrollEl = document.querySelector(".plan-scroll");
+    scrollEl.scrollLeft = 0;
+    scrollEl.scrollTop = 0;
   }
 
   function closePlanOverlay(){
-    const imgEl = document.querySelector(".plan-img");
-    imgEl.style.width = "100%";
-    imgEl.style.height = "auto";
+    document.getElementById("standMarker").style.display = "none";
     document.getElementById("planOverlay").classList.add("hidden");
   }
 
