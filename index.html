@@ -1402,11 +1402,30 @@
     }
   }
 
+  function updatePlanCloseButtonPosition(){
+    const btn = document.querySelector(".plan-close");
+    const overlay = document.getElementById("planOverlay");
+    if (!btn || overlay.classList.contains("hidden")) return;
+    const vv = window.visualViewport;
+    if (vv){
+      const top = vv.offsetTop + 12;
+      const right = (window.innerWidth - (vv.offsetLeft + vv.width)) + 12;
+      btn.style.top = top + "px";
+      btn.style.right = right + "px";
+    }
+  }
+
+  if (window.visualViewport){
+    window.visualViewport.addEventListener("resize", updatePlanCloseButtonPosition);
+    window.visualViewport.addEventListener("scroll", updatePlanCloseButtonPosition);
+  }
+
   function openPlanImage(fx, fy, box){
     const overlay = document.getElementById("planOverlay");
     const marker = document.getElementById("standMarker");
     const highlight = document.getElementById("standHighlight");
     overlay.classList.remove("hidden");
+    updatePlanCloseButtonPosition();
 
     if (typeof fx === "number" && typeof fy === "number"){
       marker.style.left = (fx * 100) + "%";
@@ -1436,6 +1455,8 @@
     document.getElementById("standMarker").style.display = "none";
     document.getElementById("standHighlight").style.display = "none";
     document.getElementById("planOverlay").classList.add("hidden");
+    const btn = document.querySelector(".plan-close");
+    if (btn){ btn.style.top = ""; btn.style.right = ""; }
   }
 
   function toggleHeaderPanel(key){
