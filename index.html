@@ -282,6 +282,14 @@
     align-items: center;
     gap: 8px;
   }
+  .stand-name{
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(30,95,116,0.35);
+    text-underline-offset: 3px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .stand-name:active{ opacity: 0.6; }
   .flag-badge{
     flex-shrink: 0;
     display: inline-flex;
@@ -899,7 +907,7 @@
     return `
       <div class="card">
         <div class="main-info">
-          <h2><span>${escapeHtml(d.stand)}</span>${flagBadge}</h2>
+          <h2><span class="stand-name" role="button" tabindex="0" onclick="zoomToStand('${escapeHtml(d.rue)}')" onkeydown="if(event.key==='Enter')zoomToStand('${escapeHtml(d.rue)}')">${escapeHtml(d.stand)}</span>${flagBadge}</h2>
           <div class="field-row"><span class="label">Rue / Place</span><span class="value">${escapeHtml(d.rue)}</span></div>
           <div class="field-row"><span class="label">Zone</span><span class="value">${escapeHtml(d.zone)}</span></div>
           ${d.pedestrian ? `<div class="field-row" style="margin-bottom:0;"><span class="label">Zonage piéton</span><span class="value">${escapeHtml(d.pedestrian)}</span></div>` : ""}
@@ -1074,11 +1082,88 @@
       : `<p class="placeholder">Contenu à venir.</p>`;
   }
 
-  function openPlanImage(){
-    document.getElementById("planOverlay").classList.remove("hidden");
+  /* ---------- Coordonnées des rues/places sur le plan (fractions 0-1) ---------- */
+  const RUE_COORDS = {
+    "Avenue Bobby Sands": { x: 0.2878, y: 0.2669 },
+    "Avenue Elsa Triolet & Louis Aragon": { x: 0.6787, y: 0.3451 },
+    "Avenue Frida Kahlo": { x: 0.296, y: 0.347 },
+    "Avenue Gisèle Halimi": { x: 0.745, y: 0.349 },
+    "Avenue Julien L'Auprêtre": { x: 0.7875, y: 0.1743 },
+    "Avenue Louis Viannet": { x: 0.439, y: 0.230 },
+    "Avenue Marcel Cachin": { x: 0.2082, y: 0.3588 },
+    "Avenue Maurice et Josette Audin": { x: 0.6456, y: 0.2025 },
+    "Avenue Olympe de Gouges": { x: 0.4795, y: 0.4263 },
+    "Avenue Pierre Bourdieu": { x: 0.3256, y: 0.4256 },
+    "Avenue Roland Leroy": { x: 0.6396, y: 0.4244 },
+    "Esplanade  Manouchian": { x: 0.5487, y: 0.2982 },
+    "Place Agnès Varda": { x: 0.3384, y: 0.2822 },
+    "Place Odette Niles": { x: 0.213, y: 0.285 },
+    "Place de l'État de Palestine": { x: 0.816, y: 0.269 },
+    "Plaine Emmeline Pankhurst": { x: 0.2333, y: 0.4073 },
+    "Rue Alvaro Cunhal": { x: 0.832, y: 0.2095 },
+    "Rue Alvaro Cunhel": { x: 0.832, y: 0.2095 },
+    "Rue Che Guevara": { x: 0.886, y: 0.172 },
+    "Rue JM Tjibaou": { x: 0.9078, y: 0.307 },
+    "Rue Jean-Marie Tjibaou": { x: 0.9078, y: 0.307 },
+    "Rue Jean-Marie Tjibaou / Plaine Mary Anning": { x: 0.93, y: 0.34 },
+    "Rue Jina Mahsa Amini": { x: 0.742, y: 0.2765 },
+    "Rue Leymah Gbowee": { x: 0.85, y: 0.158 },
+    "Rue Marguerite Sanger": { x: 0.9144, y: 0.1829 },
+    "Rue Marwan Barghouti": { x: 0.825, y: 0.235 },
+    "Rue Mumia Abu-Jamal": { x: 0.894, y: 0.238 },
+    "Rue Nelson Mandela": { x: 0.83, y: 0.252 },
+    "Rue Rosa Luxembourg": { x: 0.43, y: 0.278 },
+    "Rue du Colonel Fabien": { x: 0.6921, y: 0.3871 },
+    "Voie Pompiers": { x: 0.47, y: 0.30 }
+  };
+
+  function zoomToStand(rue){
+    const coord = RUE_COORDS[rue];
+    if (coord){
+      openPlanImage(coord.x, coord.y);
+    } else {
+      openPlanImage();
+    }
+  }
+
+  function openPlanImage(fx, fy){
+    const overlay = document.getElementById("planOverlay");
+    const scrollEl = document.querySelector(".plan-scroll");
+    const imgEl = document.querySelector(".plan-img");
+    overlay.classList.remove("hidden");
+
+    const applyView = () => {
+      if (typeof fx === "number" && typeof fy === "number" && imgEl.naturalWidth){
+        const ZOOM = 3.2;
+        const vw = scrollEl.clientWidth;
+        const ratio = imgEl.naturalHeight / imgEl.naturalWidth;
+        const dispW = vw * ZOOM;
+        const dispH = dispW * ratio;
+        imgEl.style.width = dispW + "px";
+        imgEl.style.height = "auto";
+        requestAnimationFrame(() => {
+          scrollEl.scrollLeft = Math.max(0, dispW * fx - scrollEl.clientWidth / 2);
+          scrollEl.scrollTop = Math.max(0, dispH * fy - scrollEl.clientHeight / 2);
+        });
+      } else {
+        imgEl.style.width = "100%";
+        imgEl.style.height = "auto";
+        scrollEl.scrollLeft = 0;
+        scrollEl.scrollTop = 0;
+      }
+    };
+
+    if (imgEl.complete && imgEl.naturalWidth){
+      applyView();
+    } else {
+      imgEl.onload = applyView;
+    }
   }
 
   function closePlanOverlay(){
+    const imgEl = document.querySelector(".plan-img");
+    imgEl.style.width = "100%";
+    imgEl.style.height = "auto";
     document.getElementById("planOverlay").classList.add("hidden");
   }
 
