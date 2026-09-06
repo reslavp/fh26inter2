@@ -547,8 +547,8 @@
 
 <script>
   /* ---------- Mot de passe ---------- */
-  const PASSWORD = "inter2";
-  const UNLOCK_KEY = "stands_unlocked_v1";
+  const PASSWORD = "central26";
+  const UNLOCK_KEY = "stands_unlocked_v2";
 
   const lockScreen = document.getElementById("lockScreen");
   const appEl = document.getElementById("app");
@@ -808,7 +808,70 @@
     { stand: "Nord", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
     { stand: "Freres des hommes", flag: "", rue: "Avenue Olympe de Gouges", pompier: "4", pompier2: "", zone: "Agora zone Ouest", pedestrian: "Plaine baker - Agora - Côté est" },
     { stand: "fnsac cgt", flag: "", rue: "Rue Rosa Luxembourg", pompier: "4", pompier2: "", zone: "Jack Ralite Zone Est", pedestrian: "Jacques ralite -Agora zone SE" },
-    { stand: "PCF bretigny", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" }
+    { stand: "PCF bretigny", flag: "", rue: "Avenue Maurice et Josette Audin", pompier: "10", pompier2: "", zone: "Nina Simone zone ouest", pedestrian: "Nina Simone - Forum social" },
+    { stand: "SIF", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Paris 15", flag: "", rue: "Avenue Julien L'Auprêtre", pompier: "9", pompier2: "", zone: "Nina Simone zone Est", pedestrian: "Nina Simone - Village du monde zone Ouest" },
+    { stand: "Montrouge", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone O" },
+    { stand: "Suresnes-Saint-Cloud", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone O" },
+    { stand: "Pionnier", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "La Grosse Boîte", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "Contre Courant", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "Cuba France", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "ASFA", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "2 Rives", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "Front Populaire en Turquie", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "MRAP", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "SGLCE LIVRE CGT", flag: "", rue: "Rue Leymah Gbowee", pompier: "9", pompier2: "", zone: "Village du Monde zone NO", pedestrian: "Nina Simone - Village du monde zone  Nord Est" },
+    { stand: "Secours Populaire Français", flag: "", rue: "Rue Marwan Barghouti", pompier: "9", pompier2: "", zone: "Place Palestine zone O", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Boulogne-Billancourt", flag: "", rue: "Rue Marwan Barghouti", pompier: "9", pompier2: "", zone: "Place Palestine zone O", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Avente", flag: "", rue: "Rue Alvaro Cunhel", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "FAL", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "APDH", flag: "", rue: "Rue Alvaro Cunhel", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Sinnamary Guyane", flag: "", rue: "Rue Alvaro Cunhal", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Sinn Féin", flag: "", rue: "Rue Alvaro Cunhal", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Soudanais", flag: "", rue: "Rue Alvaro Cunhal", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Nicaragua", flag: "", rue: "Rue Alvaro Cunhal", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "PC Irakien", flag: "", rue: "Rue Alvaro Cunhal", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "KKP", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "ACSF", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "SORA", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "Parti Tudeh d'Iran", flag: "", rue: "Rue Che Guevara", pompier: "", pompier2: "", zone: "", pedestrian: "" },
+    { stand: "Iranian Fadaian", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "RDA", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "ACCA", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "ARDVKF", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "Connolly", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Zaama Faso", flag: "", rue: "Rue Che Guevara", pompier: "9", pompier2: "7 BIS", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène Village du monde" },
+    { stand: "Xam-Xamle", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "SOS  méditerranée", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Journal PC Guadeloupe", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Survie", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Parti des Travailleurs", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Annidaa", flag: "", rue: "Rue Nelson Mandela", pompier: "9", pompier2: "", zone: "Place Palestine zone NE", pedestrian: "Place Palestine- Scène 92" },
+    { stand: "Madagascar", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Place Palestine - Village du Monde zone E" },
+    { stand: "Rifondazione", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Place Palestine - Village du Monde zone E" },
+    { stand: "Mésopotamie", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Place Palestine - Village du Monde zone E" },
+    { stand: "Asso Sahraouis France", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Place Palestine - Village du Monde zone E" },
+    { stand: "ACTIT", flag: "", rue: "Rue JM Tjibaou", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone SE" },
+    { stand: "USTKE", flag: "", rue: "Rue JM Tjibaou", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone SE" },
+    { stand: "Hébron", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Place Palestine", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "MST Brésil", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Place Palestine", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Palestine", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Place Palestine", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Le Rif", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "PC Chilien", flag: "", rue: "Rue Nelson Mandela", pompier: "7 BIS", pompier2: "", zone: "Place Palestine", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "FGB (Maroc)", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "FUAF", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Indonésie", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Young Struggle", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Médecins du Monde", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Libérons Mumia", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "Tran To Nga", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" },
+    { stand: "PCM Martinique", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Nhân Dan", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Médecins Sans Frontières", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "2ATF", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Paxason", flag: "", rue: "Rue Marguerite Sanger", pompier: "7 BIS", pompier2: "", zone: "Villade du monde Sud Est", pedestrian: "Grande scène - Village du Monde zone NE" },
+    { stand: "Diamant Afrique", flag: "", rue: "Rue Mumia Abu-Jamal", pompier: "7 BIS", pompier2: "", zone: "Place Allende EST", pedestrian: "Place Palestine - Village du Monde zone SE" }
   ];
 
   let data = DEFAULT_DATA;
