@@ -1604,6 +1604,18 @@
     const qualityBtn = document.querySelector(".plan-quality-toggle");
     if (qualityBtn){ qualityBtn.style.top = ""; qualityBtn.style.right = ""; }
     resetPlanTransform();
+    // On force une mesure propre et un rechargement net des tuiles à la prochaine
+    // ouverture, pour éviter toute dérive ou accumulation d'état entre deux recherches.
+    planBaseRect = null;
+    resetPlanTiles();
+  }
+
+  function resetPlanTiles(){
+    document.querySelectorAll(".plan-tile").forEach(tile => {
+      tile.classList.remove("loaded");
+      tile.removeAttribute("src");
+      delete tile.dataset.loaded;
+    });
   }
 
   let planIsHD = true; // le PNG (HD) est l'affichage par défaut
